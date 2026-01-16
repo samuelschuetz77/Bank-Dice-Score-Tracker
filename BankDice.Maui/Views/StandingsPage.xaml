@@ -10,30 +10,30 @@
             <Label Text="{Binding Status}" TextColor="DarkRed"/>
 
             <!-- Simple Standings Table -->
-            <Frame Padding="12" HasShadow="True">
+            <Frame Padding="12" HasShadow="True" HorizontalOptions="Center" MaximumWidthRequest="500">
                 <VerticalStackLayout Spacing="8">
                     <Label Text="Current Standings" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
 
                     <!-- Table Header -->
-                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" 
-                          Padding="8,12,8,8" 
+                    <Grid ColumnDefinitions="*,100,100"
+                          Padding="8,12,8,8"
                           BackgroundColor="#F0F0F0"
-                          ColumnSpacing="12">
+                          ColumnSpacing="16">
                         <Label Grid.Column="0" Text="Player" FontAttributes="Bold" FontSize="14" />
-                        <Label Grid.Column="2" Text="This Round" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="End" />
-                        <Label Grid.Column="3" Text="Total" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="End" />
+                        <Label Grid.Column="1" Text="This Round" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="End" />
+                        <Label Grid.Column="2" Text="Total" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="End" />
                     </Grid>
 
                     <!-- Table Rows -->
                     <CollectionView ItemsSource="{Binding PlayerRows}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" 
-                                      Padding="8" 
-                                      ColumnSpacing="12">
+                                <Grid ColumnDefinitions="*,100,100"
+                                      Padding="8"
+                                      ColumnSpacing="16">
                                     <Label Grid.Column="0" Text="{Binding Name}" VerticalTextAlignment="Center" FontSize="16" />
-                                    <Label Grid.Column="2" Text="{Binding ThisRoundPoints}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="16" />
-                                    <Label Grid.Column="3" Text="{Binding Total}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="16" FontAttributes="Bold" />
+                                    <Label Grid.Column="1" Text="{Binding ThisRoundPoints}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="16" />
+                                    <Label Grid.Column="2" Text="{Binding Total}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="16" FontAttributes="Bold" />
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

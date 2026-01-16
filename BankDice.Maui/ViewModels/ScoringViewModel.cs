@@ -29,7 +29,7 @@ public sealed class ScoringViewModel : ObservableObject
     public string NextActionText =>
         _step switch
         {
-            TurnStep.Rolling => RollCount < 3 ? "Safety zone: enter the next roll (banking not allowed yet)." 
+            TurnStep.Rolling => RollCount < BankRules.SafetyRolls ? "Safety zone: enter the next roll (banking not allowed yet)." 
                                               : "Enter the next roll.",
             TurnStep.Banking => "Banking phase: select who banks, or continue to next roller.",
             TurnStep.RoundEnded => "Round ended. Start the next round.",
@@ -146,6 +146,13 @@ public sealed class ScoringViewModel : ObservableObject
         set => SetProperty(ref _status, value);
     }
 
+    private string _modalError = "";
+    public string ModalError
+    {
+        get => _modalError;
+        set => SetProperty(ref _modalError, value);
+    }
+
     public Command RollSevenCommand { get; }
     public Command RollDoublesCommand { get; }
     public Command RollValueCommand { get; }
@@ -260,6 +267,7 @@ public sealed class ScoringViewModel : ObservableObject
             if (!CanEnterRoll) return;
 
             Status = "";
+            ModalError = "";
             _pendingKind = RollKind.Value;
             _pendingSum = null;
 
@@ -276,11 +284,13 @@ public sealed class ScoringViewModel : ObservableObject
             ShowSumEntry = false;
             SumText = "";
             Status = "";
+            ModalError = "";
         }
 
         private void ChooseKind(RollKind kind)
         {
             _pendingKind = kind;
+            ModalError = "";
 
             if (kind == RollKind.Seven)
             {
@@ -298,8 +308,8 @@ public sealed class ScoringViewModel : ObservableObject
 
             ShowSumEntry = true;
             SumPromptText = kind == RollKind.Doubles
-                ? "Enter doubles sum (2–12)"
-                : "Enter roll sum (2–12)";
+                ? "Enter doubles sum (2?12)"
+                : "Enter roll sum (2?12)";
             SumText = "";
         }
 
@@ -309,19 +319,20 @@ public sealed class ScoringViewModel : ObservableObject
 
             if (!int.TryParse(SumText?.Trim(), out var sum) || sum < 2 || sum > 12)
             {
-                Status = "Enter a number from 2 to 12.";
+                ModalError = "Enter a number from 2 to 12.";
                 return;
             }
 
             // Validate doubles: must be even (2, 4, 6, 8, 10, 12)
             if (_pendingKind == RollKind.Doubles && sum % 2 != 0)
             {
-                Status = $"Invalid doubles! {sum} is not possible with doubles. Valid: 2, 4, 6, 8, 10, 12.";
+                ModalError = $"Invalid doubles! {sum} is not possible with doubles. Valid: 2, 4, 6, 8, 10, 12.";
                 return;
             }
 
             _pendingSum = sum;
             ShowRollModal = false;
+            ModalError = "";
 
             ApplyRoll(_pendingKind, sum);
         }
@@ -371,7 +382,11 @@ public sealed class ScoringViewModel : ObservableObject
             {
                 _step = TurnStep.RoundEnded;
                 IsBankingPhase = false;
-                Status = "Everyone banked. Round ended. Start the next round.";
+                Status = "Everyone banked. Round ended.";
+                
+                CheckGameEndOrPrepareNextRoundUI();
+                RaiseAll();
+                return;
             }
             else
             {
@@ -447,15 +462,14 @@ public sealed class ScoringViewModel : ObservableObject
             IsBankingPhase = false;
             Status = "Rolled a 7: unbanked players scored 0. Round ended.";
 
-            Raise(nameof(CanEnterRoll));
-            Raise(nameof(CanContinue));
-            Raise(nameof(NextActionText));
             CheckGameEndOrPrepareNextRoundUI();
+            
+            RaiseAll();
             return;
         }
 
         // If roll count < 3, keep rolling step (safety zone) and advance to next roller
-        if (_session.Engine.RollCountThisRound < 3)
+        if (_session.Engine.RollCountThisRound <= BankRules.SafetyRolls)
         {
             _step = TurnStep.Rolling;
             IsBankingPhase = false;
@@ -531,10 +545,12 @@ public sealed class ScoringViewModel : ObservableObject
         // If everyone banked, end round immediately
         if (_session.Engine.InRound.Count == 0)
         {
-            Status = "Everyone banked. Round ended.";
+            _step = TurnStep.RoundEnded;
             IsBankingPhase = false;
-            RaiseAll();
+            Status = "Everyone banked. Round ended.";
+            
             CheckGameEndOrPrepareNextRoundUI();
+            RaiseAll();
             return;
         }
 

@@ -18,4 +18,9 @@ public partial class ScoringPage : ContentPage
         base.OnAppearing();
         _vm.RefreshFromSession();
     }
+
+    private void ConfirmRollButton_Clicked(object? sender, EventArgs e)
+    {
+        SumEntry?.Unfocus();
+    }
 }

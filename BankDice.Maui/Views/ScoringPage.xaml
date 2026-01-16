@@ -77,7 +77,7 @@
                         <CollectionView ItemsSource="{Binding Players}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid ColumnDefinitions="*,Auto" Padding="6">
+                                    <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="6" Padding="6,4">
                                         <Label Grid.Column="0" Text="{Binding Name}">
                                             <Label.Triggers>
                                                 <DataTrigger TargetType="Label" Binding="{Binding IsInRound}" Value="False">
@@ -111,7 +111,7 @@
                 <Frame IsVisible="{Binding ShowValuePrompt}" Padding="12">
                     <VerticalStackLayout Spacing="8">
                         <Label Text="{Binding PromptTitle}" FontAttributes="Bold"/>
-                        <Entry Text="{Binding PromptValue}" Keyboard="Numeric" Placeholder="2–12"/>
+                        <Entry Text="{Binding PromptValue}" Keyboard="Numeric" Placeholder="2ï¿½12"/>
                         <HorizontalStackLayout Spacing="10">
                             <Button Text="OK" Command="{Binding PromptOkCommand}" />
                             <Button Text="Cancel" Command="{Binding PromptCancelCommand}" />
@@ -171,10 +171,11 @@
                     <!-- Only shows if Doubles or Value selected -->
                     <VerticalStackLayout IsVisible="{Binding ShowSumEntry}" Spacing="8">
                         <Label Text="{Binding SumPromptText}" />
-                        <Entry Text="{Binding SumText}" Keyboard="Numeric" Placeholder="2–12"/>
-                        <Button Text="Confirm Roll" Command="{Binding ConfirmRollCommand}" WidthRequest="200" HorizontalOptions="Center" />
+                        <Entry x:Name="SumEntry" Text="{Binding SumText}" Keyboard="Numeric" Placeholder="2ï¿½12"/>
+                        <Label Text="{Binding ModalError}" TextColor="Red" FontAttributes="Bold" Margin="0,4,0,0"/>
+                        <Button Text="Confirm Roll" Command="{Binding ConfirmRollCommand}" Clicked="ConfirmRollButton_Clicked" WidthRequest="200" HorizontalOptions="Center" />
                     </VerticalStackLayout>
-
+    
                     <Button Text="Cancel" Command="{Binding CancelRollCommand}" WidthRequest="200" HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Frame>
@@ -182,3 +183,4 @@
 
     </Grid>
 </ContentPage>
+
