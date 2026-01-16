@@ -1,0 +1,59 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.cache
+*.vspscc
+
+# NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+
+# .NET Core
+project.assets.json
+
+# MAUI/Xamarin
+*.app
+*.ipa
+*.apk
+*.aab
+
+# macOS
+.DS_Store
+*.dmg
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Misc
+*.tmp
+*.temp
+*.log

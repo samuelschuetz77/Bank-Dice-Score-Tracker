@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BankDice.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:BankDice.Maui.Views"
+    FlyoutBehavior="Flyout">
+
+    <!-- Flyout contains one group that has tabs -->
+    <FlyoutItem Title="Bank Dice" Route="bankdice">
+        <Tab Title="Home">
+            <ShellContent
+                Route="home"
+                ContentTemplate="{DataTemplate views:HomePage}" />
+        </Tab>
+
+        <Tab Title="Setup">
+            <ShellContent
+                Route="setup"
+                ContentTemplate="{DataTemplate views:SetupPage}" />
+        </Tab>
+
+        <Tab Title="Scoring">
+            <ShellContent
+                Route="scoring"
+                ContentTemplate="{DataTemplate views:ScoringPage}" />
+        </Tab>
+
+        <Tab Title="Standings">
+            <ShellContent
+                Route="standings"
+                ContentTemplate="{DataTemplate views:StandingsPage}" />
+        </Tab>
+    </FlyoutItem>
+</Shell>

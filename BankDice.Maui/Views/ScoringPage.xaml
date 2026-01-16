@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BankDice.Maui.Views.ScoringPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Scoring">
+
+    <Grid>
+        <!-- Main content -->
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <!-- Round/Bank pot cards - Horizontal Layout -->
+                <HorizontalStackLayout Spacing="8" HorizontalOptions="FillAndExpand">
+
+                    <!-- Round Card -->
+                    <Frame Padding="12" HasShadow="True" CornerRadius="8" HorizontalOptions="FillAndExpand">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Round" FontSize="14" HorizontalOptions="Center" TextColor="Gray"/>
+                            <Label Text="{Binding RoundNumber}" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Roll Count Card -->
+                    <Frame Padding="12" HasShadow="True" CornerRadius="8" HorizontalOptions="FillAndExpand">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Roll Count" FontSize="14" HorizontalOptions="Center" TextColor="Gray"/>
+                            <Label Text="{Binding RollCount}" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Bank Pot Card -->
+                    <Frame Padding="12" HasShadow="True" CornerRadius="8" HorizontalOptions="FillAndExpand">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Bank Pot" FontSize="14" HorizontalOptions="Center" TextColor="Gray"/>
+                            <Label Text="{Binding BankPot}" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </HorizontalStackLayout>
+
+                <!-- Current Roller - Prominent Display -->
+                <Frame Padding="16" HasShadow="True" CornerRadius="8" BackgroundColor="#E3F2FD" HorizontalOptions="Center">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Current Roller" FontSize="16" HorizontalOptions="Center" TextColor="Gray"/>
+                        <Label Text="{Binding CurrentRollerName}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#1976D2"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Primary action area -->
+                <Frame Padding="12">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="{Binding NextActionText}" FontAttributes="Bold" />
+
+                        <Button Text="Enter Roll Result"
+                                Command="{Binding OpenRollModalCommand}"
+                                IsVisible="{Binding CanEnterRoll}"
+                                IsEnabled="{Binding CanEnterRoll}"
+                                WidthRequest="250"
+                                HorizontalOptions="Center" />
+
+                        <Button Text="{Binding ContinueButtonText}"
+                                Command="{Binding ContinueCommand}"
+                                IsVisible="{Binding CanContinue}"
+                                WidthRequest="250"
+                                HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Label Text="{Binding Status}" TextColor="DarkRed"/>
+
+                <!-- Banking Phase section -->
+                <Frame IsVisible="{Binding ShowBankingUI}" Padding="12">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Banking Phase" FontAttributes="Bold"/>
+
+                        <CollectionView ItemsSource="{Binding Players}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,Auto" Padding="6">
+                                        <Label Grid.Column="0" Text="{Binding Name}">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsInRound}" Value="False">
+                                                    <Setter Property="TextColor" Value="Gray"/>
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+
+                                        <CheckBox Grid.Column="1"
+                                                  IsChecked="{Binding BankSelected}"
+                                                  IsEnabled="{Binding IsInRound}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <!-- Confirmation panel -->
+                        <Frame IsVisible="{Binding ShowBankConfirm}" Padding="10">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding BankConfirmText}" />
+                                <HorizontalStackLayout Spacing="10">
+                                    <Button Text="Yes" Command="{Binding ConfirmBankYesCommand}" />
+                                    <Button Text="No" Command="{Binding ConfirmBankNoCommand}" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Legacy Prompt panel (keeping for compatibility) -->
+                <Frame IsVisible="{Binding ShowValuePrompt}" Padding="12">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="{Binding PromptTitle}" FontAttributes="Bold"/>
+                        <Entry Text="{Binding PromptValue}" Keyboard="Numeric" Placeholder="2–12"/>
+                        <HorizontalStackLayout Spacing="10">
+                            <Button Text="OK" Command="{Binding PromptOkCommand}" />
+                            <Button Text="Cancel" Command="{Binding PromptCancelCommand}" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Legacy roll buttons (keeping for compatibility) -->
+                <HorizontalStackLayout Spacing="10" IsVisible="False">
+                    <Button Text="7" Command="{Binding RollSevenCommand}" />
+                    <Button Text="Doubles" Command="{Binding RollDoublesCommand}" />
+                    <Button Text="Value" Command="{Binding RollValueCommand}" />
+                </HorizontalStackLayout>
+
+                <!-- Legacy banking buttons (keeping for compatibility) -->
+                <HorizontalStackLayout Spacing="10" IsVisible="False">
+                    <Button Text="Advance to Next Roller"
+                            Command="{Binding AdvanceRollerCommand}" />
+                    <Button Text="Bank Selected"
+                            Command="{Binding OpenBankConfirmCommand}" />
+                </HorizontalStackLayout>
+
+                <Button Text="Next Round"
+                        Command="{Binding NextRoundCommand}"
+                        IsVisible="{Binding ShowNextRound}"
+                        WidthRequest="250"
+                        HorizontalOptions="Center" />
+
+                <!-- Standings link -->
+                <Button Text="View Current Standings"
+                        Command="{Binding GoToStandingsCommand}"
+                        WidthRequest="250"
+                        HorizontalOptions="Center" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Roll Modal Overlay -->
+        <Grid IsVisible="{Binding ShowRollModal}"
+              BackgroundColor="#80000000"
+              Padding="24"
+              InputTransparent="False">
+
+            <Frame VerticalOptions="Center" HorizontalOptions="Center"
+                   Padding="16" WidthRequest="340">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Enter Roll" FontSize="18" FontAttributes="Bold" />
+
+                    <Label Text="Choose outcome:" />
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Button Text="7" Command="{Binding ChooseSevenCommand}" WidthRequest="80" />
+                        <Button Text="Doubles" Command="{Binding ChooseDoublesCommand}" WidthRequest="80" />
+                        <Button Text="Value" Command="{Binding ChooseValueCommand}" WidthRequest="80" />
+                    </HorizontalStackLayout>
+
+                    <!-- Only shows if Doubles or Value selected -->
+                    <VerticalStackLayout IsVisible="{Binding ShowSumEntry}" Spacing="8">
+                        <Label Text="{Binding SumPromptText}" />
+                        <Entry Text="{Binding SumText}" Keyboard="Numeric" Placeholder="2–12"/>
+                        <Button Text="Confirm Roll" Command="{Binding ConfirmRollCommand}" WidthRequest="200" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+
+                    <Button Text="Cancel" Command="{Binding CancelRollCommand}" WidthRequest="200" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+    </Grid>
+</ContentPage>

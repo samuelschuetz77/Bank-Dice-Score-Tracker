@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BankDice.Maui.Views.StandingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Standings">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12">
+            <Label Text="{Binding Status}" TextColor="DarkRed"/>
+
+            <!-- Simple Standings Table -->
+            <Frame Padding="12" HasShadow="True">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Current Standings" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
+
+                    <!-- Table Header -->
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" 
+                          Padding="8,12,8,8" 
+                          BackgroundColor="#F0F0F0"
+                          ColumnSpacing="12">
+                        <Label Grid.Column="0" Text="Player" FontAttributes="Bold" FontSize="14" />
+                        <Label Grid.Column="2" Text="This Round" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="End" />
+                        <Label Grid.Column="3" Text="Total" FontAttributes="Bold" FontSize="14" HorizontalTextAlignment="End" />
+                    </Grid>
+
+                    <!-- Table Rows -->
+                    <CollectionView ItemsSource="{Binding PlayerRows}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" 
+                                      Padding="8" 
+                                      ColumnSpacing="12">
+                                    <Label Grid.Column="0" Text="{Binding Name}" VerticalTextAlignment="Center" FontSize="16" />
+                                    <Label Grid.Column="2" Text="{Binding ThisRoundPoints}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="16" />
+                                    <Label Grid.Column="3" Text="{Binding Total}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="16" FontAttributes="Bold" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
