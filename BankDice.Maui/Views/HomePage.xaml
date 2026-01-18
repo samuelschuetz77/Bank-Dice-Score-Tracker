@@ -7,18 +7,24 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="16" Spacing="12">
-            <Label Text="{Binding Title}" FontSize="28" FontAttributes="Bold"/>
-            <Label Text="{Binding RulesText}" FontSize="14"/>
+            <Label Text="{Binding Title}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
+            <Label Text="{Binding RulesText}" FontSize="14" />
 
             <Button Text="{Binding StartButtonText}"
                     Command="{Binding StartOrRestartCommand}"
                     WidthRequest="250"
-                    HorizontalOptions="Center" />
+                    HorizontalOptions="Center"
+                    BackgroundColor="#1976D2"
+                    TextColor="White"
+                    CornerRadius="8" />
 
             <Button Text="Go to Setup"
                     Command="{Binding GoSetupCommand}"
                     WidthRequest="250"
-                    HorizontalOptions="Center" />
+                    HorizontalOptions="Center"
+                    BackgroundColor="#29B6F6"
+                    TextColor="White"
+                    CornerRadius="8" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -10,13 +10,13 @@
         <Label Text="Players (3 - 8)" FontAttributes="Bold" />
 
         <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-            <Entry Text="{Binding NewName}" Placeholder="Player name" WidthRequest="250"/>
-            <Button Text="Add" Command="{Binding AddPlayerCommand}" WidthRequest="100" />
+            <Entry Text="{Binding NewName}" Placeholder="Player name" WidthRequest="250" ClearButtonVisibility="WhileEditing"/>
+            <Button Text="Add" Command="{Binding AddPlayerCommand}" WidthRequest="100" BackgroundColor="#1976D2" TextColor="White" CornerRadius="8" />
         </HorizontalStackLayout>
 
         <Button Text="{Binding OrderButtonText}" Command="{Binding ToggleOrderingCommand}" WidthRequest="250" HorizontalOptions="Center" />
 
-        <CollectionView ItemsSource="{Binding Players}">
+        <CollectionView ItemsSource="{Binding Players}" EmptyView="Add players to start">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="6" ColumnSpacing="8">
@@ -46,7 +46,7 @@
                         <Button Grid.Column="4" Text="Remove"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemovePlayerCommand}"
                                 CommandParameter="{Binding .}"
-                                WidthRequest="90" />
+                                WidthRequest="90" BackgroundColor="#E53935" TextColor="White" CornerRadius="8" />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

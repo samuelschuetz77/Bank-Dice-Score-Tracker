@@ -25,7 +25,7 @@
                     </Grid>
 
                     <!-- Table Rows -->
-                    <CollectionView ItemsSource="{Binding PlayerRows}">
+                    <CollectionView ItemsSource="{Binding PlayerRows}" EmptyView="No scores yet">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid ColumnDefinitions="*,100,100"
